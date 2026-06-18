@@ -1,10 +1,9 @@
 services:
-  # Backend API
   - type: web
-    name: hungdv-backend
+    name: hungdv
     runtime: node
     plan: free
-    buildCommand: cd backend && npm install
+    buildCommand: cd frontend && npm install && npm run build && cd ../backend && npm install
     startCommand: cd backend && npm start
     envVars:
       - key: NODE_ENV
@@ -22,18 +21,6 @@ services:
       - key: ADMIN_PASSWORD
         sync: false
     healthCheckPath: /api/health
-
-  # Frontend (Static Site)
-  - type: static_site
-    name: hungdv-frontend
-    runtime: node
-    plan: free
-    buildCommand: cd frontend && npm install && npm run build
-    staticPublishPath: frontend/dist
-    routes:
-      - type: rewrite
-        source: /**
-        destination: /index.html
 
 databases:
   - name: hungdv-db
